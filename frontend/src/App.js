@@ -1,14 +1,42 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import GetDataComponent from './components/GetDataComponent'
 import { PickerOverlay } from 'filestack-react'
+import { getData, postData } from './API/Api'
+import Loading from './components/Loading'
 
 const App = () => {
   const [isPicker, setIsPicker] = useState(false)
   const [image, setImage] = useState('')
+  const [result, setResult] = useState([])
+  const [getDataLoading, setGetDataLoading] = useState(true)
+  const [postDataLoading, setPostDataLoading] = useState(false)
+  const [postDatas, setPostDatas] = useState()
+  const [title, setTitle] = useState('')
+
+  useEffect(() => {
+    getData({ setGetDataLoading, setResult })
+    if (postDatas) {
+      setImage('')
+      setTitle('')
+      getData({ setGetDataLoading, setResult })
+    }
+  }, [postDatas])
+
+  const submitHandler = (e) => {
+    e.preventDefault()
+    !image
+      ? alert('Image require')
+      : title.length < 3
+      ? alert('Title is too short')
+      : postData({ title, image, setPostDatas, setPostDataLoading })
+  }
 
   return (
     <div className="bg-blue-50 px-4 flex-colo">
-      <form className="bg-blue-100 shadow-md rounded w-2/5 py-12 px-4">
+      <form
+        className="bg-blue-100 shadow-md rounded w-2/5 py-12 px-4"
+        onSubmit={submitHandler}
+      >
         {image ? (
           <img
             src={image && image.filesUploaded[0].url}
@@ -28,15 +56,18 @@ const App = () => {
         {/* input title */}
         <input
           type="text"
+          required
           placeholder="Image Title"
           className="w-full my-8 bg-white py-4 px-2 rounded border border-blue-800 text-blue-800 font-semibold"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
         />
         {/* sumbit button */}
         <button
           type="submit"
-          className="w-full bg-blue-800 text-white font-bold   rounded py-4"
+          className="w-full bg-blue-800 text-white font-bold rounded py-4"
         >
-          Submit
+          {postDataLoading ? 'Loading...' : 'Submit'}
         </button>
         {/* Filestack */}
         <div className="mt-4 relative">
@@ -50,15 +81,16 @@ const App = () => {
               onError={(res) => alert(res)}
               pickerOptions={{
                 maxFiles: 1,
-                accept:'image/*',
+                accept: ['image/*'],
                 errorsTimeout: 2000,
-                maxSize: 1 * 1000 *  1000,
+                maxSize: 1 * 1000 * 1000,
               }}
             />
           )}
         </div>
       </form>
-      <GetDataComponent />
+      {getDataLoading && <Loading />}
+      <GetDataComponent result={result} />
     </div>
   )
 }
