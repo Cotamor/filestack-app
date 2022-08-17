@@ -5,3 +5,5 @@
 - create react app
 - install tailwind css
 - filestack sdk
+- PickOverlay Component
+- pickerOptions
