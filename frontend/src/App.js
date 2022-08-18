@@ -32,9 +32,9 @@ const App = () => {
   }
 
   return (
-    <div className="bg-blue-50 px-4 flex-colo">
+    <div className="bg-blue-50 px-4 flex-colo sm:px-0 sm:mx-3">
       <form
-        className="bg-blue-100 shadow-md rounded w-2/5 py-12 px-4"
+        className="bg-blue-100 shadow-md rounded lg:w-2/5 md:w-3/5 w-full py-12 px-4"
         onSubmit={submitHandler}
       >
         {image ? (

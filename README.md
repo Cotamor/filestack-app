@@ -13,3 +13,5 @@
    - upload model
    - create Route and Router
    - errorhander etc
+3. Responsive
+   - make it responsive

@@ -3,7 +3,7 @@
 const GetDataComponent = (props) => {
   const { result } = props
   return (
-    <div className="grid grid-cols-4 container mx-auto gap-10 my-12">
+    <div className="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-1 sm:mx-3 container mx-auto gap-10 my-12">
       {result.length === 0 ? (
         <h1>No Images</h1>
       ) : (
